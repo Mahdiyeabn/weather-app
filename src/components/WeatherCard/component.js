@@ -5,22 +5,22 @@ import Location from "./Location";
 import Icon from "./Icon";
 import Condition from "./Condition";
 
-const WeatherCard = ({ temp, condition, city, country, getWeather }) => {
+const WeatherCard = ({ tempMin, tempMax, condition, city, country, getWeather }) => {
   let highColor = 0;
   let lowColor = 0;
   let bg = null;
-  if (temp > 12) {
+  if (tempMin > 12) {
     // This is for hot weather
-    highColor = (1 - (temp - 12) / 28) * 255;
+    highColor = (1 - (tempMin - 12) / 28) * 255;
     lowColor = highColor - 200;
     bg = `linear-gradient(
       to top,
       rgb(255, ${highColor}, 0),
       rgb(255, ${Math.abs(lowColor)}, 0)
     )`;
-  } else if (+temp <= 12) {
+  } else if (+tempMin <= 12) {
     // This is for cold weather
-    highColor = (1 - (temp + 20) / 32) * 255;
+    highColor = (1 - (tempMin + 20) / 32) * 255;
     lowColor = highColor - 200;
     bg = `linear-gradient(
       to top,
@@ -45,7 +45,7 @@ const WeatherCard = ({ temp, condition, city, country, getWeather }) => {
     <Card>
       <Location getWeather={getWeather} city={city} country={country} />
       <Icon condition={condition} />
-      <Condition temp={temp} condition={condition} />
+      <Condition temp={tempMin} condition={condition} />
     </Card>
 
    

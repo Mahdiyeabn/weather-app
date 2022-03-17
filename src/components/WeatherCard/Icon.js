@@ -5,32 +5,26 @@ const Icon = props => {
   const Icon = styled.img`
     width: 40%;
   `;
-
+  console.log(props.condition);
   var icon = "";
   switch (props.condition) {
-    case "Clouds":
+    case "Cloudy":
       icon = `./img/Mostly Cloudy-2x.png`;
       break;
-    case "Clear":
+    case "Sunny":
       icon = `./img/Mostly Sunny-2x.png`;
       break;
-    case "Haze":
+    case "Hazy Sunshine":
       icon = `./img/Haze-2x.png`;
       break;
-    case "Hail":
+    case "Sleet":
       icon = `./img/Hail-2x.png`;
       break;
     case "Fog":
       icon = `./img/Fog-2x.png`;
       break;
-    case "Tornado":
-      icon = `./img/Tornado-2x.png`;
-      break;
-    case "Dust":
+    case "Dreary":
       icon = `./img/Dust-2x.png`;
-      break;
-    case "Mist":
-      icon = `./img/Fog-2x.png`;
       break;
     case "Snow":
       icon = `./img/Snow-2x.png`;
@@ -38,10 +32,10 @@ const Icon = props => {
     case "Rain":
       icon = `./img/Rain-2x.png`;
       break;
-    case "Drizzle":
+    case "Showers":
       icon = `./img/Drizzle-2x.png`;
       break;
-    case "Thunderstorm":
+    case "T-Storms":
       icon = `./img/Severe Thunderstorm-2x.png`;
       break;
     default:
