@@ -26,12 +26,12 @@ const WeatherEngine = ({ location }) => {
     try {
 
       const locationResponse = await fetch(
-        `http://dataservice.accuweather.com/locations/v1/cities/search?apikey=${weatherApiKey}&q=${search}&details=true`
+        `https://dataservice.accuweather.com/locations/v1/cities/search?apikey=${weatherApiKey}&q=${search}&details=true`
       );
 
       const cityData = await locationResponse.json();
       console.log(cityData[0].Key);
-      const forecastResponse = await fetch(`http://dataservice.accuweather.com/forecasts/v1/daily/1day/${cityData[0].Key}?metric=true&apikey=${weatherApiKey}`);
+      const forecastResponse = await fetch(`https://dataservice.accuweather.com/forecasts/v1/daily/1day/${cityData[0].Key}?metric=true&apikey=${weatherApiKey}`);
 
       const result = await forecastResponse.json();
       console.log(result);
