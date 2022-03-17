@@ -121,6 +121,17 @@ function App() {
     );
   }
 
+  if(search.trim() == ""){
+    return(
+      <div>
+        <input type="text" value={search} name="serach"/>
+       
+        <button onClick={() => setSearch(search)}>
+        Search
+        </button>
+      </div>
+    );
+  }
   return (
     <WeatherCard
       temp={weather.temp}
