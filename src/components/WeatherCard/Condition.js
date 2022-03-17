@@ -1,10 +1,12 @@
 import React from "react";
 import styled from "@emotion/styled";
 
-const Condition = ({ temp, condition }) => {
+const Condition = ({ tempMin, tempMax, condition }) => {
   return (
     <>
       <div style={{ fontSize: "2rem" }}>
+        <span>
+          {tempMin} to {tempMax}</span>
       </div>
       <State>{condition}</State>
     </>

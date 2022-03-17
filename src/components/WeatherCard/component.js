@@ -45,7 +45,7 @@ const WeatherCard = ({ tempMin, tempMax, condition, city, country, getWeather })
     <Card>
       <Location getWeather={getWeather} city={city} country={country} />
       <Icon condition={condition} />
-      <Condition temp={tempMin} condition={condition} />
+      <Condition tempMin={tempMin} tempMax={tempMax} condition={condition} />
     </Card>
 
    
