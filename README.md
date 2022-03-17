@@ -1,2 +1,2 @@
-# wheater-app
-wheater app test
+# weather-app
+weather app test
