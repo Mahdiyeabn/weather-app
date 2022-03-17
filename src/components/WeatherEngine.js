@@ -1,8 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect } from "react";
 
 import WeatherCard from "./WeatherCard/component";
 
+const weaterApiKey = "BA96Hm5zGXOSmG3WDgrtZOdrIu1e7l7F";
+
 const WeatherEngine = ({ location }) => {
+
   // init for our state variables
   const [query, setQuery] = useState(""); // for user query
   const [error, setError] = useState(false); // for error handeling
@@ -15,30 +18,33 @@ const WeatherEngine = ({ location }) => {
     country: null,
   });
 
-  const apiKey = "BA96Hm5zGXOSmG3WDgrtZOdrIu1e7l7F";
-  //defining the data fetchin function
-  const getWeather = async (q) => {
+  const getWeatherAsync = async (search) => {
     setQuery(""); // reset the query to empty
-    setLoading(true); // set loading to true while we fetch the results
-    try {
-      const apiRes = await fetch(
-        `http://dataservice.accuweather.com/locations/v1/cities/search?apikey=${apiKey}&q=${q}&details=true`
-      );
+    setLoading(true);
 
-      const resJSON = await apiRes.json();
-      console.log(resJSON);
-      const location = resJSON[0].Details.Key;
-      console.log(location);
-      const forcast = await fetch(`http://dataservice.accuweather.com/forecasts/v1/daily/1day/${location}?apikey=${apiKey}`);
-      const result = await forcast.json();
-      console.log("result: ");
-      console.log(result);
-      
-      const tempMin = result.DailyForecasts[0].Temperature.Minimum.Value;
-      const tempMax = result.DailyForecasts[0].Temperature.Maximum.Value;
-      const condition = result.Headline.Text;
-      const country = resJSON[0].Country.LocalizedName;
-      const city = resJSON[0].LocalizedName;
+    try {
+
+      const cityData = CitySearchAsync(search);
+      const response = await axios.get(
+        `http://dataservice.accuweather.com/forecasts/v1/daily/1day/${cityData.key}`,
+        {
+          params: {
+            apiKey: weaterApiKey,
+          },
+        },
+      );
+      console.log(response.json());
+      const transformData = await response.data.list.map((data) => ({
+        dt: data[0],
+        //temp: bla,
+        //temp_min: data.main.temp_min,
+        //temp_max: data.main.temp_max,
+        //humidity: data.main.humidity,
+        //icon: data.weather[0].icon,
+        //desc: data.weather[0].description,
+        //clouds: data.clouds.all,
+        //wind: data.wind.speed,
+      }));
 
       setWeather({
         temp: `${tempMin} - ${tempMax}`,
@@ -46,14 +52,43 @@ const WeatherEngine = ({ location }) => {
         condition: condition,
         country: country,
       });
-    } catch (error) {
-      console.log(error);
-      console.log("weather not loaded");
-      setError(true); 
+
+      setLoading(false);
+    } catch (err) {
+        setError(true);
+        console.log(err.stack);
     }
-    setLoading(false);
+  };
+  
+  async function CitySearchAsync(search) {
+    try {
+      const response = await axios.get(
+        `http://dataservice.accuweather.com/locations/v1/cities/search`,
+        {
+          params: {
+            q: search,
+            apiKey: weaterApiKey,
+          },
+        },
+      );
+      console.log(response.json());
+      
+      const cityData = await response.data.list.map((data) => ({
+        dt: data[0],
+        key: data[0].Key,
+        name: data[0].LocalizedName,
+      }));
+
+      return cityData;
+
+    } catch (err) {
+        console.error("get City data failed");
+        setError(err.stack);
+        return;
+    }
   };
 
+  
   useEffect(() => {
     getWeather(location);
   }, [location]);
